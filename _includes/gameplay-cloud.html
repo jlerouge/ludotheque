@@ -1,0 +1,12 @@
+<aside class="cloud" id="gameplay-cloud">
+    <header><h4>Genres et mécaniques</h4></header>
+    <div class="round-border">
+    {% for gameplay in site.gameplay %}
+        <span style="font-size: {{ gameplay | last | size | times: 100 | divided_by: site.gameplay.size | plus: 70 }}%">
+            <a href="/gameplay/#{{ gameplay | first | split: " " | first }}">
+                {{ gameplay | first }}
+            </a>
+        </span>{% unless forloop.last %}&nbsp;|&nbsp;{% endunless %}
+    {% endfor %}
+    </div>
+</aside>

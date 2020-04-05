@@ -1,0 +1,20 @@
+---
+layout: default
+title: Accueil
+---
+
+<section class="home">
+	<header><h2>Accueil</h2></header>
+	<p>Ici c'est la ludothèque des Lerouge lolilol.</p>
+
+	<ul>
+	{% for game in site.games %}
+	<li><a href="{{ game.url }}">{{ game.title }}</a></li>
+	{% endfor %}
+	</ul>
+
+	<div class="widgets">
+		{% include gameplay-cloud.html %}
+		{% include theme-cloud.html %}
+	</div>
+</section>

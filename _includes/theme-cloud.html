@@ -1,0 +1,12 @@
+<aside class="cloud" id="theme-cloud">
+    <header><h4>Thèmes</h4></header>
+    <div class="round-border">
+    {% for theme in site.themes %}
+        <span style="font-size: {{ theme | last | size | times: 100 | divided_by: site.themes.size | plus: 70 }}%">
+            <a href="/themes/#{{ theme | first | split: " " | first }}">
+                {{ theme | first }}
+            </a>
+        </span>{% unless forloop.last %}&nbsp;|&nbsp;{% endunless %}
+    {% endfor %}
+    </div>
+</aside>

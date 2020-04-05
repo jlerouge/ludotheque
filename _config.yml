@@ -1,0 +1,6 @@
+name: Famille Lerouge
+markdown: kramdown
+safe: true
+lsi: false
+highlighter: rouge
+url: http://jeux.lerouge.me
