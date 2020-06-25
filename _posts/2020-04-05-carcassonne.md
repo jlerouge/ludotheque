@@ -2,13 +2,10 @@
 layout: game
 title: "Carcassonne"
 gameplay:
-    - Placement stratégique de tuiles et pions
+    - Stratégie
     - Majorités
-    - Dominos
-    - Puzzle
 themes:
     - Moyen Âge
-    - Cité Médiévale
 min_players: 2
 max_players: 5
 min_age: 8
@@ -18,6 +15,8 @@ combinatorial: yes
 randomness: yes
 complete_info: yes
 external_link: https://www.trictrac.net/jeu-de-societe/carcassonne
+box_img: https://cdn.trictrac.net/documents/formats/thumb_300_300/documents/originals/c2/a1/cf908a01ba2aa7a8753706c45ccbada92e0e.jpeg
+example_img: https://cdn2.trictrac.net/documents/formats/enlargement/documents/originals/74/95/ee7ebf992836c049f03ef90ab43c44cca6dd.jpeg
 ---
 
 La cité de Carcassonne est bien connue pour ses fortifications aux toits pointus (pure invention des restaurateurs qui avaient pris comme modèle leur château en carton pâte de leur enfance) et à ses touristes.

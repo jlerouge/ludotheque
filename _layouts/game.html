@@ -5,74 +5,84 @@ layout:     default
 <section class="game">
   <article>
     <header><h2>{{ page.title }}</h2></header>
-    {% assign id = page.id | split: "/" | last %}
-    
         <p class="gameplay">
-            <label><i class="fa fa-gamepad"></i> Genres et mécaniques</label>
+            <label style="display: block;"><i class="fa fa-gamepad"></i> Genres et mécaniques</label>
             {% for gameplay in page.gameplay %}
-            <a href="/gameplay/#{{ gameplay | split : " " | first }}">{{ gameplay }}</a>
-            {% unless forloop.last %}, {% endunless %}
+            <a href="/gameplay/#{{ gameplay | slugify: "latin" }}">{{ gameplay }}</a>{% unless forloop.last %}, {% endunless %}
             {% endfor %}
         </p>
 
         <p class="themes">
-            <label><i class="fa fa-book"></i> Thèmes</label>
+            <label style="display: block;"><i class="fa fa-book"></i> Thèmes</label>
             
             {% for theme in page.themes %}
-            <a href="/themes/#{{ theme | split : " " | first }}">{{ theme }}</a>
-            {% unless forloop.last %}, {% endunless %}
+            <a href="/themes/#{{ theme | slugify: "latin" }}">{{ theme }}</a>{% unless forloop.last %}, {% endunless %}
             {% endfor %}
         </p>
     
         <p class="characteristics">
-            <label for"min_age"><i class="fa fa-child"></i> Âge minimum</label>
-            <span class="characteristic" id="min_age">{{ page.min_age }}</span><br />
+            <label for="min_age"><i class="fa fa-child"></i> Âge minimal :</label>
+            <span class="characteristic" id="min_age">{{ page.min_age }} ans</span><br />
 
-            <label for"mean_duration"><i class="fa fa-clock-o"></i> Durée moyenne</label>
+            <label for="players"><i class="fa fa-users"></i> Nombre de joueurs :</label>
+            <span class="characteristic" id="players">
+                {% if page.min_players == null %}
+                    Jusqu'à {{ page.max_players }}
+                {% elsif page.max_players == null %}
+                    À partir de {{ page.min_players }}
+                {% elsif page.min_players == page.max_players %}
+                    {{ page.min_players }}
+                {% else %}
+                    De {{ page.min_players }} à {{ page.max_players }}
+                {% endif %}
+                joueurs.
+            </span><br />
+
+            <label for="mean_duration"><i class="fa fa-clock-o"></i> Durée moyenne :</label>
             <span class="characteristic" id="mean_duration">{{ page.mean_duration }} min</span><br />
 
-            <label for"dexterity"><i class="fa fa-hand-paper-o"></i> Habileté physique</label>
+            <label for="dexterity"><i class="fa fa-hand-paper-o"></i> Dextérité :</label>
             <span class="characteristic" id="dexterity">
-            {{ if pagepage.dexterity == "yes" }}
+            {% if page.dexterity %}
                 Oui <i class="fa fa-check" style="color: darkgreen"></i>
-            {{ else }}
+            {% else %}
                 Non <i class="fa fa-times" style="color: red"></i>
-            {{ endif }}
+            {% endif %}
             </span><br />
 
-            <label for"combinatorial"><i class="fa fa-cogs"></i> Réflexion / décision</label>
+            <label for="combinatorial"><i class="fa fa-cogs"></i> Réflexion :</label>
             <span class="characteristic" id="combinatorial">
-            {{ if pagepage.combinatorial == "yes" }}
+            {% if page.combinatorial %}
                 Oui <i class="fa fa-check" style="color: darkgreen"></i>
-            {{ else }}
+            {% else %}
                 Non <i class="fa fa-times" style="color: red"></i>
-            {{ endif }}
+            {% endif %}
             </span><br />
 
-            <label for"randomness"><i class="fa fa-random"></i> Hasard</label>
+            <label for="randomness"><i class="fa fa-random"></i> Hasard :</label>
             <span class="characteristic" id="randomness">
-            {{ if pagepage.randomness == "yes" }}
+            {% if page.randomness %}
                 Oui <i class="fa fa-check" style="color: darkgreen"></i>
-            {{ else }}
+            {% else %}
                 Non <i class="fa fa-times" style="color: red"></i>
-            {{ endif }}
+            {% endif %}
             </span><br />
 
-            <label for"complete_info"><i class="fa fa-info-circle"></i> Information complète et parfaite</label>
+            <label for="complete_info"><i class="fa fa-info-circle"></i> Information complète :</label>
             <span class="characteristic" id="complete_info">
-            {{ if pagepage.complete_info == "yes" }}
+            {% if page.complete_info %}
                 Oui <i class="fa fa-check" style="color: darkgreen"></i>
-            {{ else }}
+            {% else %}
                 Non <i class="fa fa-times" style="color: red"></i>
-            {{ endif }}
+            {% endif %}
             </span><br />
 
         </p>
     </header>
 
     <div class="description">
-    <img class="game-box" src="/img/{{ id }}-box.jpg" onError="style.display = 'none';"/>
-    <img class="game-example" src="/img/{{ id }}-example.jpg" onError="style.display = 'none';"/>
+    <img class="game-box" src="{{ page.box_img }}" onError="style.display = 'none';"/>
+    <img class="game-example" src="{{ page.example_img }}" onError="style.display = 'none';"/>
     <h4>Résumé :</h4>
     {{ content }}
     </div>
@@ -80,7 +90,7 @@ layout:     default
     <footer>
         <nav>
             {% if page.external_link != null %}
-                <a href={{ external_link }}><i class="fa fa-external-link"></i> Plus d'informations sur ce jeu</a><br />
+                <a href={{ page.external_link }}><i class="fa fa-external-link"></i> Plus d'informations sur ce jeu</a><br />
             {% endif %}
         </nav>
     </footer>

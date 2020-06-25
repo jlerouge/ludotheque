@@ -1,12 +1,22 @@
 <aside class="cloud" id="gameplay-cloud">
     <header><h4>Genres et mécaniques</h4></header>
     <div class="round-border">
-    {% for gameplay in site.gameplay %}
-        <span style="font-size: {{ gameplay | last | size | times: 100 | divided_by: site.gameplay.size | plus: 70 }}%">
-            <a href="/gameplay/#{{ gameplay | first | split: " " | first }}">
-                {{ gameplay | first }}
-            </a>
-        </span>{% unless forloop.last %}&nbsp;|&nbsp;{% endunless %}
+    {% capture gameplays %}
+        {% for game in site.posts %}
+            {% for gameplay in game.gameplay | split %}{{ gameplay }}{% unless forloop.last %}::{% endunless %}{% endfor %}{% unless forloop.last %}::{% endunless %}
+        {% endfor %}
+    {% endcapture %}
+
+    {% assign gameplays_set = gameplays | strip | split: "::" | uniq %}
+    {% assign gameplays_count = gameplays | strip | split: "::" | size %}
+    {% assign gameplays = gameplays | strip | append: "::" | prepend: "::" %}
+
+    {% for gameplay in gameplays_set %}
+        {% assign gameplay_count = gameplays | split: gameplay | size | minus: 1 %}
+        <span style="font-size: {{ gameplay_count | times: 100 | divided_by: gameplays_count | plus: 70 }}%">
+            <a href="/gameplay/#{{ gameplay | slugify: "latin" }}">{{ gameplay }}</a>
+        </span>{% unless forloop.last %} | {% endunless %}
     {% endfor %}
+
     </div>
 </aside>

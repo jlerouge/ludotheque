@@ -1,20 +1,93 @@
 ---
 layout: default
-title: Accueil
+title: Ludothèque
 ---
 
-<section class="home">
-	<header><h2>Accueil</h2></header>
-	<p>Ici c'est la ludothèque des Lerouge lolilol.</p>
+<header><h2>Ludothèque des Lerouge</h2></header>
 
-	<ul>
-	{% for game in site.games %}
-	<li><a href="{{ game.url }}">{{ game.title }}</a></li>
-	{% endfor %}
-	</ul>
+<table id="games-table" class="tablesorter">
+	<thead>
+        <tr>
+			<th scope="col">Titre</th>
+			<th scope="col"><i class="fa fa-gamepad"></i></th>
+			<th scope="col"><i class="fa fa-book"></i></th>
+			<th scope="col"><i class="fa fa-users"> min</i></th>
+			<th scope="col"><i class="fa fa-users"> max</i></th>
+			<th scope="col"><i class="fa fa-child"></i></th>
+			<th scope="col"><i class="fa fa-clock-o"></i></th>
+			<th scope="col"><i class="fa fa-hand-paper-o"></i></th>
+			<th scope="col"><i class="fa fa-cogs"></i></th>
+			<th scope="col"><i class="fa fa-random"></i></th>
+			<th scope="col"><i class="fa fa-info-circle"></i></th>
+        </tr>
+    </thead>
 
-	<div class="widgets">
-		{% include gameplay-cloud.html %}
-		{% include theme-cloud.html %}
-	</div>
-</section>
+	<tbody>
+		{% for game in site.posts %}
+		<tr>
+			<td><a href="{{ game.url }}">{{ game.title }}</a></td>
+			<td>
+				{% for gameplay in game.gameplay %}
+				<a href="/gameplay/#{{ gameplay | slugify: "latin" }}">{{ gameplay }}</a>{% unless forloop.last %}, {% endunless %}
+				{% endfor %}
+			</td>
+			<td>
+				{% for theme in game.themes %}
+				<a href="/themes/#{{ theme | slugify: "latin" }}">{{ theme }}</a>{% unless forloop.last %}, {% endunless %}
+				{% endfor %}
+			</td>
+			<td>{% if game.min_players != null %}{{ game.min_players }}{% else %}-{% endif %}</td>
+			<td>{% if game.max_players != null %}{{ game.max_players }}{% else %}-{% endif %}</td>
+			<td>{% if game.min_age != null %}{{ game.min_age }} et +{% else %}?{% endif %}</td>
+			<td>{% if game.mean_duration != null %}{{ game.mean_duration }} min{% else %}?{% endif %}</td>
+			<td>
+			{% if game.dexterity %}
+				<span class="hidden">1</span>
+				<i class="fa fa-check" style="color: darkgreen"></i>
+			{% else %}
+				<span class="hidden">0</span>
+				<i class="fa fa-times" style="color: red"></i>
+			{% endif %}
+			</td>
+			<td>
+			{% if game.combinatorial %}
+				<span class="hidden">1</span>
+				<i class="fa fa-check" style="color: darkgreen"></i>
+			{% else %}
+				<span class="hidden">0</span>
+				<i class="fa fa-times" style="color: red"></i>
+			{% endif %}
+			</td>
+			<td>
+			{% if game.randomness %}
+				<span class="hidden">1</span>
+				<i class="fa fa-check" style="color: darkgreen"></i>
+			{% else %}
+				<span class="hidden">0</span>
+				<i class="fa fa-times" style="color: red"></i>
+			{% endif %}
+			</td>
+			<td>
+			{% if game.complete_info %}
+				<span class="hidden">1</span>
+				<i class="fa fa-check" style="color: darkgreen"></i>
+			{% else %}
+				<span class="hidden">0</span>
+				<i class="fa fa-times" style="color: red"></i>
+			{% endif %}
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+<div class="widgets">
+	{% include gameplay-cloud.html %}
+	{% include theme-cloud.html %}
+</div>
+
+<script type="text/javascript">
+	$(document).ready( function() {
+		$("#games-table").tablesorter();
+	});
+</script>
