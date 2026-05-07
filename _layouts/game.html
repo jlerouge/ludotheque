@@ -41,6 +41,11 @@ layout:     default
             <label for="mean_duration"><i class="fa fa-clock-o"></i> Durée moyenne :</label>
             <span class="characteristic" id="mean_duration">{{ page.mean_duration }} min</span><br />
 
+            {% if page.year %}
+            <label for="year"><i class="fa fa-calendar"></i> Première édition :</label>
+            <span class="characteristic" id="year">{{ page.year }}</span><br />
+            {% endif %}
+
             <label for="dexterity"><i class="fa fa-hand-paper-o"></i> Dextérité :</label>
             <span class="characteristic" id="dexterity">
             {% if page.dexterity %}

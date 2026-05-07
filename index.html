@@ -15,6 +15,7 @@ title: Ludothèque
 			<th scope="col"><i class="fa fa-users"> max</i></th>
 			<th scope="col"><i class="fa fa-child"></i></th>
 			<th scope="col"><i class="fa fa-clock-o"></i></th>
+			<th scope="col"><i class="fa fa-calendar"></i></th>
 			<th scope="col"><i class="fa fa-hand-paper-o"></i></th>
 			<th scope="col"><i class="fa fa-cogs"></i></th>
 			<th scope="col"><i class="fa fa-random"></i></th>
@@ -40,6 +41,7 @@ title: Ludothèque
 			<td>{% if game.max_players != null %}{{ game.max_players }}{% else %}-{% endif %}</td>
 			<td>{% if game.min_age != null %}{{ game.min_age }} et +{% else %}?{% endif %}</td>
 			<td>{% if game.mean_duration != null %}{{ game.mean_duration }} min{% else %}?{% endif %}</td>
+			<td>{% if game.year != null %}{{ game.year }}{% else %}-{% endif %}</td>
 			<td>
 			{% if game.dexterity %}
 				<span class="hidden">1</span>
@@ -88,6 +90,6 @@ title: Ludothèque
 
 <script type="text/javascript">
 	$(document).ready( function() {
-		$("#games-table").tablesorter();
+		$("#games-table").tablesorter({ sortList: [[0, 0]] });
 	});
 </script>
