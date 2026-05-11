@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 2014
 title: "Madame Ching"

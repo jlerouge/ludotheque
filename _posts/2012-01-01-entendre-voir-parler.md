@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 2012
 title: "Entendre voir parler"

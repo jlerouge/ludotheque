@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 2019
 title: "Blanc manger coco : la geekerie"

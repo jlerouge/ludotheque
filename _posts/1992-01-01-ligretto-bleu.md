@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 1992
 title: "Ligretto bleu"

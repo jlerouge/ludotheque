@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 2006
 title: "Der Dativ ist dem Genetiv sein Tod"

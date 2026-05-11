@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 2000
 title: "Harry Potter Mystère à Poudlard"

@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 1983
 title: Scotland Yard

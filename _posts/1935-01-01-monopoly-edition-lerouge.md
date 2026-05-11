@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 1935
 title: "Monopoly (Edition Lerouge)"

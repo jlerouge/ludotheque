@@ -1,23 +1,17 @@
 <aside class="cloud" id="theme-cloud">
-        <header><h4>Thèmes</h4></header>
-        <div class="round-border">
-        {% capture themes %}
-            {% for game in site.posts %}
-                {% for theme in game.themes | split %}{{ theme }}{% unless forloop.last %}::{% endunless %}{% endfor %}{% unless forloop.last %}::{% endunless %}
-            {% endfor %}
-        {% endcapture %}
-    
-        {% assign themes_set = themes | strip | split: "::" | sort | uniq %}
-        {% assign themes_count = themes | strip | split: "::" | size %}
-        {% assign themes = themes | strip | append: "::" | prepend: "::" %}
-
-        {% for theme in themes_set %}
-            {% assign theme_count = themes | split: theme | size | minus: 1 %}
-            <span style="font-size: {{ theme_count | times: 400 | divided_by: themes_count | plus: 70 }}%">
-                <a href="/themes/#{{ theme | slugify: "latin" }}">{{ theme }}</a>
-            </span>{% unless forloop.last %} | {% endunless %}
-        {% endfor %}
-    
-        </div>
-    </aside>
-    
+    <header><h4>Thèmes</h4></header>
+    <div class="round-border">
+    {% capture themes %}{% for game in site.posts %}{% for theme in game.themes | split %}{{ theme | strip }}{% unless forloop.last %}::{% endunless %}{% endfor %}{% unless forloop.last %}::{% endunless %}{% endfor %}{% endcapture %}
+    {% assign themes_all = themes | strip | split: "::" %}
+    {% assign themes_set = themes_all | sort | uniq %}
+    {% assign themes_total = themes_all | size %}
+    {% assign themes_str = "::" | append: themes | append: "::" %}
+    {% for theme in themes_set %}
+        {% assign th_sep = "::" | append: theme | append: "::" %}
+        {% assign theme_count = themes_str | split: th_sep | size | minus: 1 %}
+        <span style="font-size: {{ theme_count | times: 400 | divided_by: themes_total | plus: 70 }}%">
+            <a href="/?theme={{ theme | url_encode }}" data-filter-type="theme" data-filter-value="{{ theme | escape }}">{{ theme }}</a>
+        </span>{% unless forloop.last %} | {% endunless %}
+    {% endfor %}
+    </div>
+</aside>

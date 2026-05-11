@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 2005
 title: "Rory's Story Cubes Classic"

@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 2002
 title: "Voyage en Europe (Silben-Rallye Europa)"

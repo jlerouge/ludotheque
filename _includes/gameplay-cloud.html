@@ -1,22 +1,17 @@
 <aside class="cloud" id="gameplay-cloud">
     <header><h4>Genres et mécaniques</h4></header>
     <div class="round-border">
-    {% capture gameplays %}
-        {% for game in site.posts %}
-            {% for gameplay in game.gameplay | split %}{{ gameplay }}{% unless forloop.last %}::{% endunless %}{% endfor %}{% unless forloop.last %}::{% endunless %}
-        {% endfor %}
-    {% endcapture %}
-
-    {% assign gameplays_set = gameplays | strip | split: "::" | sort | uniq %}
-    {% assign gameplays_count = gameplays | strip | split: "::" | size %}
-    {% assign gameplays = gameplays | strip | append: "::" | prepend: "::" %}
-
+    {% capture gameplays %}{% for game in site.posts %}{% for gameplay in game.gameplay | split %}{{ gameplay | strip }}{% unless forloop.last %}::{% endunless %}{% endfor %}{% unless forloop.last %}::{% endunless %}{% endfor %}{% endcapture %}
+    {% assign gameplays_all = gameplays | strip | split: "::" %}
+    {% assign gameplays_set = gameplays_all | sort | uniq %}
+    {% assign gameplays_total = gameplays_all | size %}
+    {% assign gameplays_str = "::" | append: gameplays | append: "::" %}
     {% for gameplay in gameplays_set %}
-        {% assign gameplay_count = gameplays | split: gameplay | size | minus: 1 %}
-        <span style="font-size: {{ gameplay_count | times: 400 | divided_by: gameplays_count | plus: 70 }}%">
-            <a href="/gameplay/#{{ gameplay | slugify: "latin" }}">{{ gameplay }}</a>
+        {% assign gp_sep = "::" | append: gameplay | append: "::" %}
+        {% assign gameplay_count = gameplays_str | split: gp_sep | size | minus: 1 %}
+        <span style="font-size: {{ gameplay_count | times: 400 | divided_by: gameplays_total | plus: 70 }}%">
+            <a href="/?gameplay={{ gameplay | url_encode }}" data-filter-type="gameplay" data-filter-value="{{ gameplay | escape }}">{{ gameplay }}</a>
         </span>{% unless forloop.last %} | {% endunless %}
     {% endfor %}
-
     </div>
 </aside>

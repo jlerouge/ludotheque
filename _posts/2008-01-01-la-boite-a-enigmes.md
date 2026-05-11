@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 2008
 title: "La boîte à énigmes"

@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 1959
 title: Deutschlandreise

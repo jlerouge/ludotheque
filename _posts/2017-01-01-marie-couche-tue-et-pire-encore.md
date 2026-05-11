@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 2017
 title: "Marie Couche Tue... et pire encore"

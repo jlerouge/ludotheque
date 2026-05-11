@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 2018
 title: "Unlock! Heroic Adventures"

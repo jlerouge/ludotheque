@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 2002
 title: Risk Le Seigneur des Anneaux

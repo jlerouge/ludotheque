@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 2003
 title: "Bazar Bizarre"

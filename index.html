@@ -5,91 +5,197 @@ title: Ludothèque
 
 <header><h2>Ludothèque des Lerouge</h2></header>
 
-<table id="games-table" class="tablesorter">
-	<thead>
-        <tr>
-			<th scope="col">Titre</th>
-			<th scope="col"><i class="fa fa-gamepad"></i></th>
-			<th scope="col"><i class="fa fa-book"></i></th>
-			<th scope="col"><i class="fa fa-users"> min</i></th>
-			<th scope="col"><i class="fa fa-users"> max</i></th>
-			<th scope="col"><i class="fa fa-child"></i></th>
-			<th scope="col"><i class="fa fa-clock-o"></i></th>
-			<th scope="col"><i class="fa fa-calendar"></i></th>
-			<th scope="col"><i class="fa fa-hand-paper-o"></i></th>
-			<th scope="col"><i class="fa fa-cogs"></i></th>
-			<th scope="col"><i class="fa fa-random"></i></th>
-			<th scope="col"><i class="fa fa-info-circle"></i></th>
-        </tr>
-    </thead>
+<div id="filter-status" style="display:none;"></div>
 
-	<tbody>
-		{% for game in site.posts %}
-		<tr>
-			<td><a href="{{ game.url }}">{{ game.title }}</a></td>
-			<td>
-				{% for gameplay in game.gameplay %}
-				<a href="/gameplay/#{{ gameplay | slugify: "latin" }}">{{ gameplay }}</a>{% unless forloop.last %}, {% endunless %}
-				{% endfor %}
-			</td>
-			<td>
-				{% for theme in game.themes %}
-				<a href="/themes/#{{ theme | slugify: "latin" }}">{{ theme }}</a>{% unless forloop.last %}, {% endunless %}
-				{% endfor %}
-			</td>
-			<td>{% if game.min_players != null %}{{ game.min_players }}{% else %}-{% endif %}</td>
-			<td>{% if game.max_players != null %}{{ game.max_players }}{% else %}-{% endif %}</td>
-			<td>{% if game.min_age != null %}{{ game.min_age }} et +{% else %}?{% endif %}</td>
-			<td>{% if game.mean_duration != null %}{{ game.mean_duration }} min{% else %}?{% endif %}</td>
-			<td>{% if game.year != null %}{{ game.year }}{% else %}-{% endif %}</td>
-			<td>
-			{% if game.dexterity %}
-				<span class="hidden">1</span>
-				<i class="fa fa-check" style="color: darkgreen"></i>
-			{% else %}
-				<span class="hidden">0</span>
-				<i class="fa fa-times" style="color: red"></i>
-			{% endif %}
-			</td>
-			<td>
-			{% if game.combinatorial %}
-				<span class="hidden">1</span>
-				<i class="fa fa-check" style="color: darkgreen"></i>
-			{% else %}
-				<span class="hidden">0</span>
-				<i class="fa fa-times" style="color: red"></i>
-			{% endif %}
-			</td>
-			<td>
-			{% if game.randomness %}
-				<span class="hidden">1</span>
-				<i class="fa fa-check" style="color: darkgreen"></i>
-			{% else %}
-				<span class="hidden">0</span>
-				<i class="fa fa-times" style="color: red"></i>
-			{% endif %}
-			</td>
-			<td>
-			{% if game.complete_info %}
-				<span class="hidden">1</span>
-				<i class="fa fa-check" style="color: darkgreen"></i>
-			{% else %}
-				<span class="hidden">0</span>
-				<i class="fa fa-times" style="color: red"></i>
-			{% endif %}
-			</td>
-		</tr>
-		{% endfor %}
-	</tbody>
-</table>
+<div class="sort-controls">
+    <input type="search" id="text-search" placeholder="Rechercher un jeu…">
+    <label for="sort-select"><i class="fa fa-sort-alpha-asc"></i> Trier :</label>
+    <select id="sort-select">
+        <option value="title-asc" selected>Titre A &rarr; Z</option>
+        <option value="title-desc">Titre Z &rarr; A</option>
+        <option value="year-desc">Plus récents d'abord</option>
+        <option value="year-asc">Plus anciens d'abord</option>
+        <option value="players-asc">Moins de joueurs</option>
+        <option value="duration-asc">Durée croissante</option>
+        <option value="age-asc">Âge minimum</option>
+    </select>
+    <span id="game-count"></span>
+</div>
+
+<div id="game-grid">
+{% for game in site.posts %}
+    <div class="game-card"
+         data-title="{{ game.title | downcase | escape }}"
+         data-year="{{ game.year | default: 0 }}"
+         data-min-players="{{ game.min_players | default: 0 }}"
+         data-duration="{{ game.mean_duration | default: 0 }}"
+         data-age="{{ game.min_age | default: 0 }}"
+         data-gameplay="{{ game.gameplay | join: '||' | escape }}"
+         data-themes="{{ game.themes | join: '||' | escape }}">
+        <div class="game-card-image">
+            <img src="{{ game.box_img }}" alt="{{ game.title | escape }}" onerror="this.parentNode.style.background='linear-gradient(135deg,#4A83C0,#D94F4F)'"/>
+        </div>
+        <div class="game-card-body">
+            <a href="{{ game.url }}" class="game-card-title-link">
+                <h3 class="game-card-title">{{ game.title }}</h3>
+            </a>
+            <div class="game-card-tags">
+                {% for gameplay in game.gameplay %}
+                <a href="/?gameplay={{ gameplay | url_encode }}" class="tag-badge gp-badge" data-filter-type="gameplay" data-filter-value="{{ gameplay | escape }}">{{ gameplay }}</a>
+                {% endfor %}
+                {% for theme in game.themes %}
+                <a href="/?theme={{ theme | url_encode }}" class="tag-badge th-badge" data-filter-type="theme" data-filter-value="{{ theme | escape }}">{{ theme }}</a>
+                {% endfor %}
+            </div>
+            <div class="game-card-info">
+                <span><i class="fa fa-users"></i>
+                    {% if game.min_players %}{{ game.min_players }}{% if game.max_players and game.max_players != game.min_players %}-{{ game.max_players }}{% endif %}{% else %}?{% endif %}
+                </span>
+                <span><i class="fa fa-child"></i> {% if game.min_age %}{{ game.min_age }}+{% else %}?{% endif %}</span>
+                {% if game.mean_duration %}<span><i class="fa fa-clock-o"></i> {{ game.mean_duration }} min</span>{% endif %}
+                {% if game.year %}<span><i class="fa fa-calendar"></i> {{ game.year }}</span>{% endif %}
+            </div>
+            <div class="game-card-booleans">
+                <span title="Dexterite"><i class="fa fa-hand-paper-o"></i> {% if game.dexterity %}<i class="fa fa-check bool-yes"></i>{% else %}<i class="fa fa-times bool-no"></i>{% endif %}</span>
+                <span title="Reflexion"><i class="fa fa-cogs"></i> {% if game.combinatorial %}<i class="fa fa-check bool-yes"></i>{% else %}<i class="fa fa-times bool-no"></i>{% endif %}</span>
+                <span title="Hasard"><i class="fa fa-random"></i> {% if game.randomness %}<i class="fa fa-check bool-yes"></i>{% else %}<i class="fa fa-times bool-no"></i>{% endif %}</span>
+                <span title="Info. complete"><i class="fa fa-info-circle"></i> {% if game.complete_info %}<i class="fa fa-check bool-yes"></i>{% else %}<i class="fa fa-times bool-no"></i>{% endif %}</span>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+</div>
 
 <div class="widgets">
-	{% include gameplay-cloud.html %}
-	{% include theme-cloud.html %}
+    {% include gameplay-cloud.html %}
+    {% include theme-cloud.html %}
 </div>
 
 <script type="text/javascript">
-	$(document).ready( function() {
-		$("#games-table").tablesorter({ sortList: [[0, 0]] });
-	});
+$(document).ready(function() {
+
+    // ---- Sort ----
+    function sortCards(sortBy) {
+        var cards = $('#game-grid .game-card').toArray();
+        cards.sort(function(a, b) {
+            switch (sortBy) {
+                case 'title-asc':    return $(a).data('title').localeCompare($(b).data('title'), 'fr');
+                case 'title-desc':   return $(b).data('title').localeCompare($(a).data('title'), 'fr');
+                case 'year-desc':    return (parseInt($(b).data('year'))  || 0) - (parseInt($(a).data('year'))  || 0);
+                case 'year-asc':     return (parseInt($(a).data('year'))  || 0) - (parseInt($(b).data('year'))  || 0);
+                case 'players-asc':  return (parseInt($(a).data('min-players')) || 999) - (parseInt($(b).data('min-players')) || 999);
+                case 'duration-asc': return (parseInt($(a).data('duration'))    || 999) - (parseInt($(b).data('duration'))    || 999);
+                case 'age-asc':      return (parseInt($(a).data('age'))         || 0)   - (parseInt($(b).data('age'))         || 0);
+                default: return 0;
+            }
+        });
+        $.each(cards, function(i, card) { $('#game-grid').append(card); });
+    }
+    sortCards('title-asc');
+    $('#sort-select').on('change', function() { sortCards($(this).val()); });
+
+    // ---- Filter state (from URL) ----
+    var params    = new URLSearchParams(window.location.search);
+    var gpFilters = params.getAll('gameplay');
+    var thFilters = params.getAll('theme');
+
+    // ---- Helpers ----
+    function getCardTags(card, attr) {
+        var raw = String($(card).data(attr) || '');
+        return raw.split('||').map(function(s){ return s.trim().toLowerCase(); }).filter(Boolean);
+    }
+    function normalize(s) {
+        return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
+    function toggleUrl(type, value) {
+        var p = new URLSearchParams(window.location.search);
+        var vals = p.getAll(type);
+        var lc = value.toLowerCase();
+        var already = vals.some(function(v){ return v.toLowerCase() === lc; });
+        p.delete(type);
+        if (already) {
+            vals.filter(function(v){ return v.toLowerCase() !== lc; }).forEach(function(v){ p.append(type, v); });
+        } else {
+            vals.concat([value]).forEach(function(v){ p.append(type, v); });
+        }
+        var qs = p.toString();
+        return qs ? '/?' + qs : '/';
+    }
+    function removeUrl(type, value) {
+        var p = new URLSearchParams(window.location.search);
+        var lc = value.toLowerCase();
+        var vals = params.getAll(type).filter(function(v){ return v.toLowerCase() !== lc; });
+        p.delete(type);
+        vals.forEach(function(v){ p.append(type, v); });
+        var qs = p.toString();
+        return qs ? '/?' + qs : '/';
+    }
+
+    // ---- Restore text search from sessionStorage (coming back from a game page) ----
+    try {
+        var saved = JSON.parse(sessionStorage.getItem('gridState') || 'null');
+        if (saved && saved.textQuery && saved.search === window.location.search) {
+            $('#text-search').val(saved.textQuery);
+        }
+    } catch(e) {}
+
+    // ---- Store grid state when opening a game ----
+    $(document).on('click', '.game-card-title-link', function() {
+        try {
+            sessionStorage.setItem('gridState', JSON.stringify({
+                search: window.location.search,
+                textQuery: $('#text-search').val()
+            }));
+        } catch(e) {}
+    });
+
+    // ---- Highlight active tag filters ----
+    $('a[data-filter-type]').each(function() {
+        var type = $(this).data('filter-type');
+        var val  = $(this).data('filter-value');
+        var pool = (type === 'gameplay') ? gpFilters : thFilters;
+        if (pool.some(function(f){ return f.toLowerCase() === val.toLowerCase(); }))
+            $(this).addClass('active-filter');
+    });
+
+    // ---- Tag toggle on click ----
+    $(document).on('click', 'a[data-filter-type]', function(e) {
+        e.preventDefault();
+        window.location.href = toggleUrl($(this).data('filter-type'), $(this).data('filter-value'));
+    });
+
+    // ---- Combined filter (tags + text search) ----
+    function applyFilters() {
+        var q = normalize($('#text-search').val().trim());
+        var count = 0;
+        $('#game-grid .game-card').each(function() {
+            var gpTags = getCardTags(this, 'gameplay');
+            var thTags = getCardTags(this, 'themes');
+            var gpOk   = gpFilters.every(function(f){ return gpTags.indexOf(f.toLowerCase()) >= 0; });
+            var thOk   = thFilters.every(function(f){ return thTags.indexOf(f.toLowerCase()) >= 0; });
+            var textOk = !q || normalize($(this).data('title') || '').indexOf(q) >= 0;
+            if (gpOk && thOk && textOk) { count++; $(this).show(); }
+            else { $(this).hide(); }
+        });
+        $('#game-count').text(count + ' jeu' + (count > 1 ? 'x' : ''));
+    }
+
+    // ---- Tag filter status badges ----
+    if (gpFilters.length || thFilters.length) {
+        var badges = '';
+        gpFilters.forEach(function(f) {
+            badges += '<a href="' + removeUrl('gameplay', f) + '" class="filter-badge"><i class="fa fa-gamepad"></i> ' + f + ' &times;</a> ';
+        });
+        thFilters.forEach(function(f) {
+            badges += '<a href="' + removeUrl('theme', f) + '" class="filter-badge"><i class="fa fa-book"></i> ' + f + ' &times;</a> ';
+        });
+        $('#filter-status').html(
+            badges + '&nbsp;<a href="/" class="filter-clear">&times; Effacer tout</a>'
+        ).show();
+    }
+
+    // ---- Run filter & watch text input ----
+    applyFilters();
+    $('#text-search').on('input', applyFilters);
+});
 </script>

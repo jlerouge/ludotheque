@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 2013
 title: "Blanc manger coco"

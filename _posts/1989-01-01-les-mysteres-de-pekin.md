@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 1989
 title: "Les mystères de Pékin"

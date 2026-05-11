@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 2018
 title: "Black Stories Musiques d'Enfer"

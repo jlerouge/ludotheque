@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 2018
 title: "Bazar Bizarre 2.0"

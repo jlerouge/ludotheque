@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 2009
 title: "Le Roi des Nains"

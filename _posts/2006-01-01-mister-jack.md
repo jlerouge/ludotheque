@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 2006
 title: "Mister Jack"

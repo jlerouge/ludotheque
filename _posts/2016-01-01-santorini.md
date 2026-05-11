@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 2016
 title: Santorini

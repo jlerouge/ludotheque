@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 1996
 title: "Obélix contre Hattack"

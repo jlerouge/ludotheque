@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 2011
 title: "Bluff Party orange"

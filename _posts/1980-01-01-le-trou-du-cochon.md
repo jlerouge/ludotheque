@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 1980
 title: "Le trou du cochon"

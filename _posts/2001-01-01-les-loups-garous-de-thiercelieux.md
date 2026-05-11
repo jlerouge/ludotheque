@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 2001
 title: "Les loups garous de Thiercelieux"

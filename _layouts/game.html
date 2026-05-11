@@ -2,102 +2,94 @@
 layout:     default
 ---
 
-<section class="game">
-  <article>
-    <header><h2>{{ page.title }}</h2></header>
-        <p class="gameplay">
-            <label style="display: block;"><i class="fa fa-gamepad"></i> Genres et mécaniques</label>
+<div class="game-page">
+
+    <a class="game-back-link" href="/" id="back-link">
+        <i class="fa fa-arrow-left"></i> Retour à la grille
+    </a>
+
+    <div class="game-page-header">
+        <h2>{{ page.title }}{% if page.year %} <span class="game-year">({{ page.year }})</span>{% endif %}</h2>
+        <div class="game-tags-row">
             {% for gameplay in page.gameplay %}
-            <a href="/gameplay/#{{ gameplay | slugify: "latin" }}">{{ gameplay }}</a>{% unless forloop.last %}, {% endunless %}
+            <a href="/?gameplay={{ gameplay | url_encode }}" class="tag-badge gp-badge" data-filter-type="gameplay" data-filter-value="{{ gameplay | escape }}">{{ gameplay }}</a>
             {% endfor %}
-        </p>
-
-        <p class="themes">
-            <label style="display: block;"><i class="fa fa-book"></i> Thèmes</label>
-            
             {% for theme in page.themes %}
-            <a href="/themes/#{{ theme | slugify: "latin" }}">{{ theme }}</a>{% unless forloop.last %}, {% endunless %}
+            <a href="/?theme={{ theme | url_encode }}" class="tag-badge th-badge" data-filter-type="theme" data-filter-value="{{ theme | escape }}">{{ theme }}</a>
             {% endfor %}
-        </p>
-    
-        <p class="characteristics">
-            <label for="min_age"><i class="fa fa-child"></i> Âge minimal :</label>
-            <span class="characteristic" id="min_age">{{ page.min_age }} ans</span><br />
-
-            <label for="players"><i class="fa fa-users"></i> Nombre de joueurs :</label>
-            <span class="characteristic" id="players">
-                {% if page.min_players == null %}
-                    Jusqu'à {{ page.max_players }}
-                {% elsif page.max_players == null %}
-                    À partir de {{ page.min_players }}
-                {% elsif page.min_players == page.max_players %}
-                    {{ page.min_players }}
-                {% else %}
-                    De {{ page.min_players }} à {{ page.max_players }}
-                {% endif %}
-                joueurs.
-            </span><br />
-
-            <label for="mean_duration"><i class="fa fa-clock-o"></i> Durée moyenne :</label>
-            <span class="characteristic" id="mean_duration">{{ page.mean_duration }} min</span><br />
-
-            {% if page.year %}
-            <label for="year"><i class="fa fa-calendar"></i> Première édition :</label>
-            <span class="characteristic" id="year">{{ page.year }}</span><br />
-            {% endif %}
-
-            <label for="dexterity"><i class="fa fa-hand-paper-o"></i> Dextérité :</label>
-            <span class="characteristic" id="dexterity">
-            {% if page.dexterity %}
-                Oui <i class="fa fa-check" style="color: darkgreen"></i>
-            {% else %}
-                Non <i class="fa fa-times" style="color: red"></i>
-            {% endif %}
-            </span><br />
-
-            <label for="combinatorial"><i class="fa fa-cogs"></i> Réflexion :</label>
-            <span class="characteristic" id="combinatorial">
-            {% if page.combinatorial %}
-                Oui <i class="fa fa-check" style="color: darkgreen"></i>
-            {% else %}
-                Non <i class="fa fa-times" style="color: red"></i>
-            {% endif %}
-            </span><br />
-
-            <label for="randomness"><i class="fa fa-random"></i> Hasard :</label>
-            <span class="characteristic" id="randomness">
-            {% if page.randomness %}
-                Oui <i class="fa fa-check" style="color: darkgreen"></i>
-            {% else %}
-                Non <i class="fa fa-times" style="color: red"></i>
-            {% endif %}
-            </span><br />
-
-            <label for="complete_info"><i class="fa fa-info-circle"></i> Information complète :</label>
-            <span class="characteristic" id="complete_info">
-            {% if page.complete_info %}
-                Oui <i class="fa fa-check" style="color: darkgreen"></i>
-            {% else %}
-                Non <i class="fa fa-times" style="color: red"></i>
-            {% endif %}
-            </span><br />
-
-        </p>
-    </header>
-
-    <div class="description">
-    <img class="game-box" src="{{ page.box_img }}" onError="style.display = 'none';"/>
-    <img class="game-example" src="{{ page.example_img }}" onError="style.display = 'none';"/>
-    <h4>Résumé :</h4>
-    {{ content }}
+        </div>
     </div>
 
-    <footer>
-        <nav>
+    <div class="game-page-layout">
+
+        <aside class="game-page-sidebar">
+            <img class="game-box-img" src="{{ page.box_img }}" alt="{{ page.title | escape }}" onerror="this.style.display='none'"/>
+            <div class="game-stats">
+                {% if page.min_age %}
+                <div class="game-stat">
+                    <span class="stat-label"><i class="fa fa-child"></i> Âge min.</span>
+                    <span class="stat-value">{{ page.min_age }} ans</span>
+                </div>
+                {% endif %}
+                <div class="game-stat">
+                    <span class="stat-label"><i class="fa fa-users"></i> Joueurs</span>
+                    <span class="stat-value">{% if page.min_players == null %}Jusqu'à {{ page.max_players }}{% elsif page.max_players == null %}≥ {{ page.min_players }}{% elsif page.min_players == page.max_players %}{{ page.min_players }}{% else %}{{ page.min_players }} – {{ page.max_players }}{% endif %}</span>
+                </div>
+                {% if page.mean_duration %}
+                <div class="game-stat">
+                    <span class="stat-label"><i class="fa fa-clock-o"></i> Durée</span>
+                    <span class="stat-value">{{ page.mean_duration }} min</span>
+                </div>
+                {% endif %}
+                {% if page.year %}
+                <div class="game-stat">
+                    <span class="stat-label"><i class="fa fa-calendar"></i> 1ère édition</span>
+                    <span class="stat-value">{{ page.year }}</span>
+                </div>
+                {% endif %}
+                <div class="game-stat">
+                    <span class="stat-label"><i class="fa fa-hand-paper-o"></i> Dextérité</span>
+                    <span class="stat-value">{% if page.dexterity %}<i class="fa fa-check bool-yes"></i> Oui{% else %}<i class="fa fa-times bool-no"></i> Non{% endif %}</span>
+                </div>
+                <div class="game-stat">
+                    <span class="stat-label"><i class="fa fa-cogs"></i> Réflexion</span>
+                    <span class="stat-value">{% if page.combinatorial %}<i class="fa fa-check bool-yes"></i> Oui{% else %}<i class="fa fa-times bool-no"></i> Non{% endif %}</span>
+                </div>
+                <div class="game-stat">
+                    <span class="stat-label"><i class="fa fa-random"></i> Hasard</span>
+                    <span class="stat-value">{% if page.randomness %}<i class="fa fa-check bool-yes"></i> Oui{% else %}<i class="fa fa-times bool-no"></i> Non{% endif %}</span>
+                </div>
+                <div class="game-stat">
+                    <span class="stat-label"><i class="fa fa-info-circle"></i> Info. complète</span>
+                    <span class="stat-value">{% if page.complete_info %}<i class="fa fa-check bool-yes"></i> Oui{% else %}<i class="fa fa-times bool-no"></i> Non{% endif %}</span>
+                </div>
+            </div>
             {% if page.external_link != null %}
-                <a href={{ page.external_link }}><i class="fa fa-external-link"></i> Plus d'informations sur ce jeu</a><br />
+            <a href="{{ page.external_link }}" class="btn-external" target="_blank">
+                <i class="fa fa-external-link"></i> Plus d'informations
+            </a>
             {% endif %}
-        </nav>
-    </footer>
-  </article>
-</section>
+        </aside>
+
+        <div class="game-page-content">
+            <img class="game-example-img" src="{{ page.example_img }}" alt="{{ page.title | escape }}" onerror="this.style.display='none'"/>
+            <div class="game-description">
+                <h4>Résumé</h4>
+                {{ content }}
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+    try {
+        var saved = JSON.parse(sessionStorage.getItem('gridState') || 'null');
+        if (saved && saved.search != null) {
+            var href = '/' + saved.search;
+            document.getElementById('back-link').setAttribute('href', href);
+        }
+    } catch(e) {}
+});
+</script>

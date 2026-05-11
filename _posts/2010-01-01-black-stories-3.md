@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 2010
 title: "Black Stories 3"

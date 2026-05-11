@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 2016
 title: "Black Stories Edition Polar"

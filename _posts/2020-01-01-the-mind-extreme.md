@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 2020
 title: "The Mind Extreme"

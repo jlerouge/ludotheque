@@ -1,4 +1,4 @@
-﻿---
+---
 layout: game
 year: 1697
 title: Solitaire
